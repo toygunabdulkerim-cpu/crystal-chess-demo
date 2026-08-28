@@ -9,8 +9,7 @@
       "distribution": "internal"
     },
     "preview": {
-      "distribution": "internal",
-      "vcsUrl": "https://github.com/toygunabdulkerim-cpu/crystal-chess-demo.git"
+      "distribution": "internal"
     },
     "production": {
       "autoIncrement": true
@@ -18,5 +17,6 @@
   },
   "submit": {
     "production": {}
-  }
+  },
+  "vcsUrl": "https://github.com/toygunabdulkerim-cpu/crystal-chess-demo.git"
 }
