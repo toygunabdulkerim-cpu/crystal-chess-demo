@@ -52,7 +52,7 @@
             "ndkVersion": "27.0.12077973"
           },
           "ios": {
-            "deploymentTarget": "15.1"
+            "deploymentTarget": "16.4"
           }
         }
       ],
