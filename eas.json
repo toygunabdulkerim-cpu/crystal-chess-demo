@@ -17,6 +17,5 @@
   },
   "submit": {
     "production": {}
-  },
-  "vcsUrl": "https://github.com/toygunabdulkerim-cpu/crystal-chess-demo.git"
+  }
 }
