@@ -45,12 +45,12 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x android/gradlew
 
-      - name: Build Release APK
-        run: cd android && ./gradlew assembleRelease --no-daemon
+      - name: Build Debug APK (no keystore needed)
+        run: cd android && ./gradlew assembleDebug --no-daemon --info
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: crystal-chess-apk
-          path: android/app/build/outputs/apk/release/*.apk
+          path: android/app/build/outputs/apk/debug/*.apk
           retention-days: 30
