@@ -39,10 +39,18 @@ jobs:
           ndk-version: r27b
           build-tools-version: '34.0.0'
 
-      - name: Create local.properties
+      - name: Find Android SDK and create local.properties
         run: |
-          echo "ANDROID_HOME is $ANDROID_HOME"
-          echo "sdk.dir=$ANDROID_HOME" > android/local.properties
+          echo "ANDROID_HOME=$ANDROID_HOME"
+          echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT"
+          ls -la /usr/lib/android-sdk 2>/dev/null || echo "not at /usr/lib/android-sdk"
+          ls -la /opt/android 2>/dev/null || echo "not at /opt/android"
+          ls -la /usr/local/android-sdk 2>/dev/null || echo "not at /usr/local/android-sdk"
+          find / -name "platforms" -path "*/android*" -type d 2>/dev/null | head -5
+          # Use the first found Android SDK path
+          SDK_PATH=$(find / -name "platforms" -path "*/android*" -type d 2>/dev/null | head -1 | sed 's|/platforms/.*||')
+          echo "Found SDK at: $SDK_PATH"
+          echo "sdk.dir=$SDK_PATH" > android/local.properties
           cat android/local.properties
 
       - name: Prebuild Android project
