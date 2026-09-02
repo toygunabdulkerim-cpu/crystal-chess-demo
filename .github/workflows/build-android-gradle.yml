@@ -13,6 +13,9 @@ jobs:
     permissions:
       contents: read
 
+    env:
+      ANDROID_HOME: /usr/lib/android-sdk
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -40,7 +43,7 @@ jobs:
           build-tools-version: '34.0.0'
 
       - name: Create local.properties
-        run: echo "sdk.dir=$ANDROID_HOME" > android/local.properties
+        run: echo "sdk.dir=${ANDROID_HOME}" > android/local.properties
 
       - name: Prebuild Android project
         run: npx expo prebuild --platform android --clean
