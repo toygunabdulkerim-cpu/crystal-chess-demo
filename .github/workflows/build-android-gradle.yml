@@ -43,26 +43,6 @@ jobs:
       - name: Prebuild Android project
         run: npx expo prebuild --platform android --clean
 
-      - name: Patch Gradle files for Kotlin 2.1.20 compatibility
-        run: |
-          # Fix gradle wrapper version
-          sed -i 's|gradle-9.3.1-bin.zip|gradle-8.9-all.zip|g' android/gradle/wrapper/gradle-wrapper.properties
-          
-          # Fix build.gradle - add kotlinVersion def inside buildscript
-          sed -i '/^buildscript {/a\  def kotlinVersion = project.hasProperty('\''android.kotlinVersion'\'') ? project.property('\''android.kotlinVersion'\'') : '\''2.1.20'\''\n' android/build.gradle
-          sed -i 's|classpath('\''org.jetbrains.kotlin:kotlin-gradle-plugin'\'')|classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:\$kotlinVersion")|g' android/build.gradle
-          
-          # Fix app/build.gradle - remove kotlin.android plugin and enableBundleCompression
-          sed -i 's|apply plugin: "org.jetbrains.kotlin.android"|// apply plugin: "org.jetbrains.kotlin.android"|g' android/app/build.gradle
-          sed -i 's|enableBundleCompression = |// enableBundleCompression = |g' android/app/build.gradle
-          
-          echo "=== android/build.gradle ==="
-          cat android/build.gradle
-          echo "=== app/build.gradle head ==="
-          head -20 android/app/build.gradle
-          echo "=== gradle-wrapper.properties ==="
-          cat android/gradle/wrapper/gradle-wrapper.properties
-
       - name: Create local.properties
         run: echo "sdk.dir=${{ steps.android-setup.outputs.sdk-path }}" > android/local.properties
 
