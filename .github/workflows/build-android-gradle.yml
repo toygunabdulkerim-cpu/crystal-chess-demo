@@ -40,17 +40,39 @@ jobs:
           build-tools-version: '34.0.0'
         id: android-setup
 
+      - name: Debug Android SDK
+        run: |
+          echo "ANDROID_HOME=$ANDROID_HOME"
+          echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT"
+          echo "sdk-path output: ${{ steps.android-setup.outputs.sdk-path }}"
+          ls -la /usr/lib/android-sdk 2>/dev/null | head -10
+          ls -la /opt/android 2>/dev/null | head -10
+
       - name: Prebuild Android project
         run: npx expo prebuild --platform android --clean
 
+      - name: Debug generated files
+        run: |
+          echo "=== android/gradle.properties ==="
+          cat android/gradle.properties
+          echo "=== android/gradle/wrapper/gradle-wrapper.properties ==="
+          cat android/gradle/wrapper/gradle-wrapper.properties
+          echo "=== android/build.gradle ==="
+          cat android/build.gradle
+          echo "=== android/app/build.gradle (head) ==="
+          head -30 android/app/build.gradle
+
       - name: Create local.properties
         run: echo "sdk.dir=${{ steps.android-setup.outputs.sdk-path }}" > android/local.properties
+
+      - name: Debug local.properties
+        run: cat android/local.properties
 
       - name: Make gradlew executable
         run: chmod +x android/gradlew
 
       - name: Build Debug APK
-        run: cd android && ./gradlew assembleDebug --no-daemon
+        run: cd android && ./gradlew assembleDebug --no-daemon --stacktrace
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
